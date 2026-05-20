@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cricket Score Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Cricket Score Tracker</h1>
+    <nav>
+      <button class="nav-btn active" data-tab="dashboard">Dashboard</button>
+      <button class="nav-btn" data-tab="add-match">Add Match</button>
+      <button class="nav-btn" data-tab="history">Match History</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Dashboard Tab -->
+    <section id="dashboard" class="tab-content active">
+      <div class="stats-grid">
+        <!-- Career Overview -->
+        <div class="card full-width">
+          <h2>Career Overview</h2>
+          <div class="overview-stats" id="career-overview"></div>
+        </div>
+
+        <!-- Batting Stats -->
+        <div class="card">
+          <h2>Batting Statistics</h2>
+          <table class="stats-table" id="batting-stats-table">
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- Bowling Stats -->
+        <div class="card">
+          <h2>Bowling Statistics</h2>
+          <table class="stats-table" id="bowling-stats-table">
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- Fielding Stats -->
+        <div class="card">
+          <h2>Fielding Statistics</h2>
+          <table class="stats-table" id="fielding-stats-table">
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <!-- Recent Form -->
+        <div class="card">
+          <h2>Recent Form (Last 5 Innings)</h2>
+          <div id="recent-form"></div>
+        </div>
+
+        <!-- Milestones -->
+        <div class="card full-width">
+          <h2>Milestones</h2>
+          <div class="milestones-grid" id="milestones"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Add Match Tab -->
+    <section id="add-match" class="tab-content">
+      <div class="card form-card">
+        <h2>Log a New Match</h2>
+        <form id="match-form">
+          <!-- Match Details -->
+          <fieldset>
+            <legend>Match Details</legend>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="match-date">Date</label>
+                <input type="date" id="match-date" required />
+              </div>
+              <div class="form-group">
+                <label for="match-opponent">Opponent</label>
+                <input type="text" id="match-opponent" required placeholder="e.g. Australia" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="match-venue">Venue</label>
+                <input type="text" id="match-venue" placeholder="e.g. MCG, Melbourne" />
+              </div>
+              <div class="form-group">
+                <label for="match-format">Format</label>
+                <select id="match-format">
+                  <option value="Test">Test</option>
+                  <option value="ODI">ODI</option>
+                  <option value="T20">T20</option>
+                  <option value="Club">Club</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="match-result">Result</label>
+                <select id="match-result">
+                  <option value="Won">Won</option>
+                  <option value="Lost">Lost</option>
+                  <option value="Draw">Draw</option>
+                  <option value="Tied">Tied</option>
+                  <option value="No Result">No Result</option>
+                </select>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Batting -->
+          <fieldset>
+            <legend>
+              <label class="toggle-label">
+                <input type="checkbox" id="did-bat" checked />
+                Batting
+              </label>
+            </legend>
+            <div id="batting-fields">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="bat-runs">Runs Scored</label>
+                  <input type="number" id="bat-runs" min="0" value="0" />
+                </div>
+                <div class="form-group">
+                  <label for="bat-balls">Balls Faced</label>
+                  <input type="number" id="bat-balls" min="0" value="0" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="bat-fours">4s</label>
+                  <input type="number" id="bat-fours" min="0" value="0" />
+                </div>
+                <div class="form-group">
+                  <label for="bat-sixes">6s</label>
+                  <input type="number" id="bat-sixes" min="0" value="0" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="bat-not-out">
+                    <input type="checkbox" id="bat-not-out" />
+                    Not Out
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label for="bat-position">Batting Position</label>
+                  <input type="number" id="bat-position" min="1" max="11" placeholder="e.g. 3" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="bat-how-out">How Out</label>
+                  <select id="bat-how-out">
+                    <option value="">-- Select --</option>
+                    <option value="Bowled">Bowled</option>
+                    <option value="Caught">Caught</option>
+                    <option value="LBW">LBW</option>
+                    <option value="Run Out">Run Out</option>
+                    <option value="Stumped">Stumped</option>
+                    <option value="Hit Wicket">Hit Wicket</option>
+                    <option value="Retired Hurt">Retired Hurt</option>
+                    <option value="Obstructing">Obstructing the field</option>
+                    <option value="Timed Out">Timed Out</option>
+                    <option value="Handled Ball">Handled the ball</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Bowling -->
+          <fieldset>
+            <legend>
+              <label class="toggle-label">
+                <input type="checkbox" id="did-bowl" />
+                Bowling
+              </label>
+            </legend>
+            <div id="bowling-fields" class="hidden">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="bowl-overs">Overs</label>
+                  <input type="number" id="bowl-overs" min="0" step="0.1" value="0" />
+                </div>
+                <div class="form-group">
+                  <label for="bowl-maidens">Maidens</label>
+                  <input type="number" id="bowl-maidens" min="0" value="0" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="bowl-runs">Runs Conceded</label>
+                  <input type="number" id="bowl-runs" min="0" value="0" />
+                </div>
+                <div class="form-group">
+                  <label for="bowl-wickets">Wickets</label>
+                  <input type="number" id="bowl-wickets" min="0" value="0" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="bowl-wides">Wides</label>
+                  <input type="number" id="bowl-wides" min="0" value="0" />
+                </div>
+                <div class="form-group">
+                  <label for="bowl-noballs">No Balls</label>
+                  <input type="number" id="bowl-noballs" min="0" value="0" />
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Fielding -->
+          <fieldset>
+            <legend>Fielding</legend>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="field-catches">Catches</label>
+                <input type="number" id="field-catches" min="0" value="0" />
+              </div>
+              <div class="form-group">
+                <label for="field-stumpings">Stumpings</label>
+                <input type="number" id="field-stumpings" min="0" value="0" />
+              </div>
+              <div class="form-group">
+                <label for="field-runouts">Run Outs</label>
+                <input type="number" id="field-runouts" min="0" value="0" />
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Match</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Match History Tab -->
+    <section id="history" class="tab-content">
+      <div class="card">
+        <div class="history-header">
+          <h2>Match History</h2>
+          <div class="history-controls">
+            <select id="filter-format">
+              <option value="All">All Formats</option>
+              <option value="Test">Test</option>
+              <option value="ODI">ODI</option>
+              <option value="T20">T20</option>
+              <option value="Club">Club</option>
+              <option value="Other">Other</option>
+            </select>
+            <button class="btn btn-danger" id="export-btn">Export CSV</button>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="history-table" id="history-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Opponent</th>
+                <th>Format</th>
+                <th>Venue</th>
+                <th>Result</th>
+                <th>Runs</th>
+                <th>Balls</th>
+                <th>SR</th>
+                <th>N/O</th>
+                <th>Overs</th>
+                <th>Wkts</th>
+                <th>Econ</th>
+                <th>Catches</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="history-body"></tbody>
+          </table>
+        </div>
+        <p class="empty-msg" id="no-matches">No matches recorded yet. Go to "Add Match" to log your first match!</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Edit Match Modal -->
+  <div class="modal-overlay" id="edit-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Edit Match</h2>
+        <button class="modal-close" id="modal-close">&times;</button>
+      </div>
+      <div class="modal-body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div id="toast" class="toast"></div>
+
+  <footer>
+    <p>Cricket Score Tracker &mdash; All data stored locally in your browser.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
