@@ -35,6 +35,7 @@ function initializeTables() {
         primary_driver_phone TEXT NOT NULL,
         emergency_contact_name TEXT NOT NULL,
         emergency_contact_details TEXT NOT NULL,
+        password TEXT,
         status TEXT DEFAULT 'pending',
         approved_paid BOOLEAN DEFAULT 0,
         ferry_booking_reference TEXT,

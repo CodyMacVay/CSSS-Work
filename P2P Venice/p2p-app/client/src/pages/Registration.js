@@ -12,6 +12,7 @@ function Registration() {
     primary_driver_phone: '',
     emergency_contact_name: '',
     emergency_contact_details: '',
+    password: '',
     gdpr_consent: false
   });
   const [loading, setLoading] = useState(false);
@@ -137,6 +138,18 @@ function Registration() {
               onChange={handleChange}
               required
               placeholder="Phone number and relationship"
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Password *</label>
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              placeholder="Create a password for login"
             />
           </div>
 

@@ -36,6 +36,7 @@ router.post('/', (req, res) => {
     primary_driver_phone,
     emergency_contact_name,
     emergency_contact_details,
+    password,
     gdpr_consent
   } = req.body;
 
@@ -54,8 +55,8 @@ router.post('/', (req, res) => {
     const sql = `
       INSERT INTO teams (
         team_name, primary_driver_name, primary_driver_email, primary_driver_phone,
-        emergency_contact_name, emergency_contact_details, status, gdpr_consent
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        emergency_contact_name, emergency_contact_details, password, status, gdpr_consent
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     db.run(sql, [
@@ -65,6 +66,7 @@ router.post('/', (req, res) => {
       primary_driver_phone,
       emergency_contact_name,
       emergency_contact_details,
+      password,
       status,
       gdpr_consent
     ], function(err) {
@@ -111,13 +113,14 @@ router.put('/:id', (req, res) => {
     primary_driver_email,
     primary_driver_phone,
     emergency_contact_name,
-    emergency_contact_details
+    emergency_contact_details,
+    password
   } = req.body;
 
   const sql = `
     UPDATE teams 
     SET team_name = ?, primary_driver_name = ?, primary_driver_email = ?, primary_driver_phone = ?,
-        emergency_contact_name = ?, emergency_contact_details = ?, updated_at = CURRENT_TIMESTAMP
+        emergency_contact_name = ?, emergency_contact_details = ?, password = ?, updated_at = CURRENT_TIMESTAMP
     WHERE id = ?
   `;
 
@@ -128,6 +131,7 @@ router.put('/:id', (req, res) => {
     primary_driver_phone,
     emergency_contact_name,
     emergency_contact_details,
+    password || null,
     req.params.id
   ], function(err) {
     if (err) {

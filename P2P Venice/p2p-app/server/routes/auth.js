@@ -26,4 +26,29 @@ router.post('/login', (req, res) => {
   });
 });
 
+// Driver login
+router.post('/driver-login', (req, res) => {
+  const { email, password } = req.body;
+
+  db.get('SELECT * FROM teams WHERE primary_driver_email = ?', [email], (err, team) => {
+    if (err) {
+      return res.status(500).json({ error: 'Database error' });
+    }
+    if (!team) {
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+    if (!team.password) {
+      return res.status(400).json({ error: 'No password set for this account. Please contact admin.' });
+    }
+
+    // For demo purposes, compare plain text (in production, use bcrypt.compare)
+    if (password === team.password) {
+      const token = jwt.sign({ id: team.id, role: 'driver', team_id: team.id }, process.env.JWT_SECRET || 'secret', { expiresIn: '24h' });
+      res.json({ token, user: { id: team.id, email: team.primary_driver_email, team_name: team.team_name, role: 'driver' } });
+    } else {
+      res.status(401).json({ error: 'Invalid credentials' });
+    }
+  });
+});
+
 module.exports = router;
