@@ -27,7 +27,7 @@ function PassengerDetails() {
 
   useEffect(() => {
     fetchTeamData();
-  }, [teamId]);
+  }, [teamId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const fetchTeamData = async () => {
     try {
