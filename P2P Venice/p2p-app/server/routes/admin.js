@@ -4,31 +4,18 @@ const db = require('../database');
 
 // Get dashboard stats
 router.get('/stats', (req, res) => {
-  const queries = [
-    'SELECT COUNT(*) as total FROM teams WHERE status != "rejected"',
-    'SELECT COUNT(*) as pending FROM teams WHERE status = "pending"',
-    'SELECT COUNT(*) as approved FROM teams WHERE status = "approved"',
-    'SELECT COUNT(*) as waiting_list FROM teams WHERE status = "waiting_list"',
-    'SELECT COUNT(*) as paid FROM teams WHERE approved_paid = 1'
-  ];
-
-  Promise.all(queries.map(q => 
-    new Promise((resolve, reject) => {
-      db.get(q, [], (err, row) => {
-        if (err) reject(err);
-        else resolve(row);
-      });
-    })
-  )).then(results => {
-    res.json({
-      total: results[0].total,
-      pending: results[1].pending,
-      approved: results[2].approved,
-      waiting_list: results[3].waiting_list,
-      paid: results[4].paid
-    });
-  }).catch(err => {
-    res.status(500).json({ error: err.message });
+  db.all('SELECT * FROM teams', [], (err, allTeams) => {
+    if (err) return res.status(500).json({ error: err.message });
+    
+    const stats = {
+      total: allTeams.length,
+      pending: allTeams.filter(t => t.status === 'pending').length,
+      approved: allTeams.filter(t => t.status === 'approved').length,
+      waiting_list: allTeams.filter(t => t.status === 'waiting_list').length,
+      paid: allTeams.filter(t => t.approved_paid === 1).length
+    };
+    
+    res.json(stats);
   });
 });
 
