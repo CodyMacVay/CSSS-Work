@@ -19,7 +19,7 @@ function AdminDashboard() {
       return;
     }
     fetchData();
-  }, []);
+  }, [navigate]);
 
   const fetchData = async () => {
     try {
